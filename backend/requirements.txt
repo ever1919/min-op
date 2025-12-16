@@ -1,0 +1,9 @@
+openai
+pdfplumber
+pandas
+openpyxl
+dotenv
+streamlit
+python-pptx
+fastapi
+uvicorn
