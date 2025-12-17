@@ -21,54 +21,34 @@ def extract_text_from_pdf(pdf_path):
                 text += page_text + "\n"
     return text.strip()
 
-# condicional, si queremos modificar el rol 
-def add_flavor(cv_txt, flavor):
-    
-    """
-    cv_txt = Resultado de la función anterior, es un txt con lo extraido del CV original. 
-    flavor = Un desplegable que el usuario elige para adaptar el CV a un rol específico
 
-    Ejemplo: flavor = DE --> Convierte un CV genérico en un CV adaptado a Data Engineer.
-    """
-    with open(f"roles/{flavor}.md", "r", encoding="utf-8") as f:
-        prompt_flavor = f.read()
-    
-    prompt = f""" You are an AI assistant that modifies a candidate’s CV to better align with a specific role.
-    Use the following role description to guide your modifications:
-    {prompt_flavor}
-    
-    Using the specifications provided, adapt the following candidate CV:
-    {cv_txt}
-    """
-
-    # modifique en función prompt 
-    response = client.chat.completions.create(
-    model="gpt-5-mini",
-    messages=[{"role": "user", "content": prompt, "reasoning-effort": "medium"}])
-    return response.choices[0].message.content.strip()
-
-
-def generate_sections(cv_text, tower_selected):
+def generate_sections(cv_text, coe_selected, tower_selected):
     """ Esta función toma como input el texto del CV (con o sin flavor) y llama al prompt segun la 
     torre seleccionada a fin de generar las secciones fijas del one-pager. Si el usuario no selecciona torre,
     se usa el prompt default.md, el cuál identifica la torre según el contenido del CV."""
 
-    if tower_selected is not None:
-        with open(f"prompt_dictionary/{tower_selected.lower()}.md", "r", encoding="utf-8") as f:
-            file = f.read()
-        prompt_completed = f""" Generate one structured section (no bullets, bold keywords). 
-        Using this {file} 
-        
-        Candidate CV: {cv_text}
-        """
-    else:
-        with open(f"prompt_dictionary/default.md", "r", encoding="utf-8") as f:
-            file = f.read()
-        prompt_completed = f""" Generate one structured section (no bullets, bold keywords). 
-        Using this {file} 
-        
-        Candidate CV: {cv_text}
-        """
+    
+    with open(f"prompt_dictionary/{coe_selected.lower()}.md", "r", encoding="utf-8") as f:
+        coe_prompt = f.read()
+    prompt_completed = f""" 
+    
+    You are an AI assistant that summarizes a candidate CV into specific structured sections. Do NOT create new sections.
+    Write the output in English.
+    Return an dictionary where the section is the Key and the its information is the Value.
+
+    Formatting rules:
+    - Use line breaks to separate each idea or item. Do NOT use bullet symbols or dashes.
+    - Maintain concise, professional tone.
+    - Exclude candidate name, company names, institutions, and dates.
+    - Assume Graphik 9 font style.
+
+    This is the Tower selected by the user: {tower_selected}
+
+    {coe_prompt}
+    
+    Candidate CV: {cv_text}
+    """
+
     response = client.chat.completions.create(
         model="gpt-5-mini",
         messages=[{"role": "user", "content": prompt_completed, "reasoning-effort": "medium"}],
@@ -115,20 +95,14 @@ def generate_roles(cv_text):
     roles = [r.strip() for r in text.split("\n\n") if r.strip()]
     return roles[:4]
 
-def generate_one_pager(cv_path, flavor, tower_selected, output_path="one_pager_summary.xlsx"):
+def generate_one_pager(cv_path, coe_selected, tower_selected, output_path="one_pager_summary.xlsx"):
     """Generate all sections and return DataFrame."""
     try:
         cv_text = extract_text_from_pdf(cv_path)
-        #Opcional
-
-        if flavor is not None: 
-            cv_text = add_flavor(cv_text, flavor)
-        else: 
-            pass 
 
         # Generate fixed sections
         print("🔹 Generating: SECTIONS...")
-        sections = generate_sections(cv_text, tower_selected)
+        sections = generate_sections(cv_text, coe_selected, tower_selected)
         response_dic = json.loads(sections)
 
         # Generate dynamic roles

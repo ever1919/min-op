@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload, FileText, Download, Loader2, CheckCircle, X } from 'lucide-react';
 
 export default function CVOnePagerGenerator() {
@@ -6,7 +6,24 @@ export default function CVOnePagerGenerator() {
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [generatedPager, setGeneratedPager] = useState(null);
+  const [coeSelected, setCoeSelected] = useState('');
+  const [towerSelected, setTowerSelected] = useState('');
+  const [coeOptions, setCoeOptions] = useState({});
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const loadCoeOptions = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/coe-towers');
+        const data = await response.json();
+        setCoeOptions(data);
+      } catch (err) {
+        console.error('Failed to load COE options:', err);
+      }
+    };
+    
+    loadCoeOptions();
+  }, []);
 
   const handleDragEnter = (e) => {
     e.preventDefault();
@@ -90,7 +107,9 @@ export default function CVOnePagerGenerator() {
         },
         body: JSON.stringify({
           file: base64,
-          filename: file.name
+          filename: file.name,
+          coe_selected: coeSelected,
+          tower_selected: towerSelected
         })
       });
 
@@ -155,6 +174,55 @@ export default function CVOnePagerGenerator() {
           </div>
         </div>
       </header>
+
+        {/* COE and Tower Selection */}
+    <div className="mb-8 grid grid-cols-2 gap-6">
+      {/* COE Dropdown */}
+      <div>
+        <label className="block text-lg font-semibold text-gray-700 mb-3">
+          Center of Excellence
+        </label>
+        <select
+          value={coeSelected}
+          onChange={(e) => {
+            setCoeSelected(e.target.value);
+            setTowerSelected(''); // Reset tower when COE changes
+          }}
+          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-600 text-lg"
+        >
+          <option value="">Select a COE...</option>
+          {Object.keys(coeOptions).map((coe) => (
+            <option key={coe} value={coe}>
+              {coe}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Tower Dropdown */}
+      <div>
+        <label className="block text-lg font-semibold text-gray-700 mb-3">
+          Tower
+        </label>
+        <select
+          value={towerSelected}
+          onChange={(e) => setTowerSelected(e.target.value)}
+          disabled={!coeSelected}
+          className={`w-full px-4 py-3 border-2 rounded-lg text-lg ${
+            !coeSelected
+              ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
+              : 'border-gray-300 focus:outline-none focus:border-purple-600'
+          }`}
+        >
+          <option value="">Select a Tower...</option>
+          {coeSelected && coeOptions[coeSelected] && coeOptions[coeSelected].map((tower) => (
+            <option key={tower} value={tower}>
+              {tower}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">

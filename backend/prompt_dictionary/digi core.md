@@ -1,7 +1,3 @@
-    You are an AI assistant that summarizes a candidate CV into specific structured sections. Do NOT create new sections.
-    Write the output in English.
-    Return an dictionary where the section is the Key and the its information is the Value.
-
     SECTIONS TO GENERATE: [
             "NAME",
             "TOWER",
@@ -12,17 +8,11 @@
             "CERTIFICATIONS/TRAINING",
             "LANGUAGES"
         ]
-
-    Formatting rules:
-    - Use line breaks to separate each idea or item. Do NOT use bullet symbols or dashes.
-    - Maintain concise, professional tone.
-    - Exclude candidate name, company names, institutions, and dates.
-    - Assume Graphik 9 font style.
-
+        
     Section details:
     - NAME: Candidate’s name.
-    - TOWER: Choose ONLY ONE → SAP ARIBA, SAP S/4HANA, CONTROL TOWER or ORACLE.
-        • CONTROL TOWER → mentions SQL, Python, R, Power BI, Tableau, Looker, Alteryx, ETL, analytics, ML, automation, software development or data-driven tasks.
+    - TOWER: Based on the tower selected by the user emphasize the following skills:
+        • CONTROL TOWER → SQL, Python, R, Power BI, Tableau, Looker, Alteryx, ETL, analytics, ML, automation, software development or data-driven tasks.
         • SAP S/4HANA → SAP modules (FI, CO, MM, SD, PP, PM, etc.), Fiori, ABAP, or S/4HANA implementations.
         • SAP ARIBA → procurement, sourcing, supplier, contracts, catalogs, SRM, or Ariba modules.
         • ORACLE → Oracle ERP Cloud, Oracle E-Business Suite (EBS), Oracle Fusion, or tasks related to financials, procurement, supply chain, or HCM using Oracle technologies.
