@@ -36,6 +36,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {"status": "alive", "message": "Backend is running"}
 
 @app.get("/health")
 async def health():
