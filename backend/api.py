@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import base64
 import io
 import os
+import json
 from pathlib import Path
 from typing import Optional
 
@@ -21,8 +22,8 @@ os.chdir(BASE_DIR)
 class GenerateRequest(BaseModel):
     file: str
     filename: str
-    flavor: Optional[str] = None
-    tower: Optional[str] = None
+    coe_selected: str
+    tower_selected: str
 
 
 app = FastAPI(title="CV One-Pager API")
@@ -44,6 +45,18 @@ def root():
 async def health():
     return {"status": "ok"}
 
+@app.get("/api/coe-towers")
+def get_coe_towers():
+    """Return the COE-Tower mapping from JSON file"""
+    try:
+        with open("api/coe_tower.json", "r") as f:
+            data = json.load(f)
+        return data
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="COE Tower mapping file not found")
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid JSON format")
+
 
 @app.post("/generate-onepager")
 async def generate_onepager(req: GenerateRequest):
@@ -52,6 +65,16 @@ async def generate_onepager(req: GenerateRequest):
     Request JSON: { file: base64string, filename: string, flavor?: string, tower?: string }
     Response: PPTX binary as attachment
     """
+    # Log received parameters
+    print(f"✅ Received COE: {req.coe_selected}")
+    print(f"✅ Received Tower: {req.tower_selected}")
+
+    if not req.coe_selected or not req.tower_selected:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Missing COE or Tower. Received: coe={req.coe_selected}, tower={req.tower_selected}"
+        )
+
     try:
         # Decode and save uploaded PDF
         data = base64.b64decode(req.file)
@@ -73,7 +96,7 @@ async def generate_onepager(req: GenerateRequest):
     try:
         # Generate one-pager (creates an excel summary and returns a DataFrame)
         excel_out = output_dir / "one_pager_summary.xlsx"
-        df = gen.generate_one_pager(str(pdf_path), req.flavor, req.tower, output_path=str(excel_out))
+        df = gen.generate_one_pager(str(pdf_path), req.coe_selected, req.tower_selected, output_path=str(excel_out))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating one-pager: {e}")
 

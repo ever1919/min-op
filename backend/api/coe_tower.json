@@ -1,0 +1,5 @@
+{
+    "Digi Core": ["Control Tower", "SAP ARIBA", "SAP S/4HANA", "Oracle"],
+    "Sourcing and Procurement": ["Tower 1", "Tower 2", "Tower 3"],
+    "Planing": ["Tower 1", "Tower 2"]
+}
