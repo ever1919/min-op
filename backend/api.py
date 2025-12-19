@@ -62,6 +62,16 @@ async def generate_onepager(req: GenerateRequest):
     Request JSON: { file: base64string, filename: string, flavor?: string, tower?: string }
     Response: PPTX binary as attachment
     """
+    # Log received parameters
+    print(f"✅ Received COE: {req.coe_selected}")
+    print(f"✅ Received Tower: {req.tower_selected}")
+
+    if not req.coe_selected or not req.tower_selected:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Missing COE or Tower. Received: coe={req.coe_selected}, tower={req.tower_selected}"
+        )
+
     try:
         # Decode and save uploaded PDF
         data = base64.b64decode(req.file)

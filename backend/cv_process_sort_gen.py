@@ -42,7 +42,7 @@ def generate_sections(cv_text, coe_selected, tower_selected):
     - Exclude candidate name, company names, institutions, and dates.
     - Assume Graphik 9 font style.
 
-    This is the Tower selected by the user: {tower_selected}
+    The user selected this tower {tower_selected}. Use this to guide your summary.
 
     {coe_prompt}
     
