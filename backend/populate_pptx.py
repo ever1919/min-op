@@ -35,7 +35,7 @@ def populate_pptx(df_text):
     Populates a PowerPoint presentation with text from df_text.
     Each row of df_text should contain 'section_name' and 'output' columns.
     """
-    prs = Presentation('data/input/SC&O OP VACIO - TEMPLATE 3 - New.pptx')
+    prs = Presentation('data/input/SC&O TEMPLATE DigiCore.pptx')
     slide = prs.slides[0]
 
     # Define sections where bullets should be applied

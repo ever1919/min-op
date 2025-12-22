@@ -57,10 +57,15 @@ def get_coe_towers():
 
 @app.post("/generate-onepager")
 async def generate_onepager(req: GenerateRequest):
-    """Accepts a base64 PDF and filename, runs the generator and returns a PPTX file.
-
-    Request JSON: { file: base64string, filename: string, flavor?: string, tower?: string }
-    Response: PPTX binary as attachment
+    """Generate all sections and return DataFrame.
+        
+        Args:
+        cv_path: Path to input PDF
+        coe_selected: Selected COE
+        tower_selected: Selected Tower
+    
+    Returns:
+        DataFrame with section_name and output columns
     """
     # Log received parameters
     print(f"✅ Received COE: {req.coe_selected}")
@@ -92,8 +97,7 @@ async def generate_onepager(req: GenerateRequest):
 
     try:
         # Generate one-pager (creates an excel summary and returns a DataFrame)
-        excel_out = output_dir / "one_pager_summary.xlsx"
-        df = gen.generate_one_pager(str(pdf_path), req.coe_selected, req.tower_selected, output_path=str(excel_out))
+        df = gen.generate_one_pager(str(pdf_path), req.coe_selected, req.tower_selected, save_debug=False)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating one-pager: {e}")
 
@@ -112,6 +116,15 @@ async def generate_onepager(req: GenerateRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating PPTX: {e}")
+    
+    finally:
+    # Remove only the uploaded PDF to avoid accumulating CVs.
+        try:
+            if pdf_path.exists():
+                pdf_path.unlink()
+                print(f"✅ Removed uploaded PDF: {pdf_path}")
+        except Exception as cleanup_err:
+            print(f"⚠️ Failed to remove uploaded PDF {pdf_path}: {cleanup_err}")
 
 
 if __name__ == "__main__":

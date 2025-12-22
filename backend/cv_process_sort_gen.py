@@ -95,7 +95,7 @@ def generate_roles(cv_text):
     roles = [r.strip() for r in text.split("\n\n") if r.strip()]
     return roles[:4]
 
-def generate_one_pager(cv_path, coe_selected, tower_selected, output_path="one_pager_summary.xlsx"):
+def generate_one_pager(cv_path, coe_selected, tower_selected, save_debug=False):
     """Generate all sections and return DataFrame."""
     try:
         cv_text = extract_text_from_pdf(cv_path)
@@ -113,10 +113,12 @@ def generate_one_pager(cv_path, coe_selected, tower_selected, output_path="one_p
 
         # Create and return DataFrame
         df = pd.DataFrame(list(response_dic.items()), columns=["section_name", "output"])
-        
-        # ✅ Save to Excel
-        df.to_excel(output_path, index=False)
-        print(f"✅ One-pager saved at: {os.path.abspath(output_path)}")
+
+        # Save debug CSV if needed
+        if save_debug:
+            csv_path = f"data/output/one_pager_summary.csv"
+            df.to_csv(csv_path, index=False, encoding='utf-8')
+            print(f"✅ Debug saved at: {os.path.abspath(csv_path)}")
         
         return df
 
