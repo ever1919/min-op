@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Upload, FileText, Download, Loader2, CheckCircle, X } from 'lucide-react';
 
+const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+
 export default function CVOnePagerGenerator() {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -80,8 +82,8 @@ export default function CVOnePagerGenerator() {
       // PDF → TXT → LLM → Tabular format → PPTX (using python-pptx)
       // Expected request body: { file: base64String, filename: string }
       // Expected response: Binary PPTX file blob directly
-      
-      const response = await fetch('http://localhost:8000/generate-onepager', {
+
+      const response = await fetch(`${API_BASE}/generate-onepager`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
