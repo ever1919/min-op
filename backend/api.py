@@ -36,6 +36,39 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+def cleanup_input_pdfs(input_dir: Path):
+    """Remove all PDF files in the given input directory.
+
+    This will silently ignore errors for individual files so cleanup is best-effort.
+    """
+    try:
+        # Ensure we operate on a Path
+        input_path = Path(input_dir)
+        if not input_path.exists() or not input_path.is_dir():
+            return
+
+        for p in input_path.iterdir():
+            try:
+                if p.is_file() and p.suffix.lower() == ".pdf":
+                    p.unlink()
+            except Exception:
+                # ignore failures deleting a single file
+                continue
+    except Exception:
+        # ignore any unexpected issues during cleanup
+        return
+
+
+@app.on_event("startup")
+async def startup_cleanup():
+    input_dir = BASE_DIR / "data" / "input"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        cleanup_input_pdfs(input_dir)
+    except Exception:
+        pass
+
 @app.get("/")
 def root():
     return {"status": "alive", "message": "Backend is running"}
@@ -74,10 +107,7 @@ async def generate_onepager(req: GenerateRequest):
         # Generate one-pager (creates an excel summary and returns a DataFrame)
         excel_out = output_dir / "one_pager_summary.xlsx"
         df = gen.generate_one_pager(str(pdf_path), req.flavor, req.tower, output_path=str(excel_out))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error generating one-pager: {e}")
 
-    try:
         # Populate PPTX using generated DataFrame
         pptx_path = pptx.populate_pptx(df)
         full_pptx_path = BASE_DIR / pptx_path
@@ -91,10 +121,20 @@ async def generate_onepager(req: GenerateRequest):
         })
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating PPTX: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating one-pager / creating PPTX: {e}")
+
+    finally:
+        # Ensure temporary uploaded PDFs are removed from the input directory
+        try:
+            # Remove only the PDF we just wrote for this request
+            if pdf_path.exists() and pdf_path.is_file():
+                pdf_path.unlink()
+        except Exception:
+            # best-effort: ignore delete failures
+            pass
 
 
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("backend.api:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
