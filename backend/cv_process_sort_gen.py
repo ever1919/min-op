@@ -95,7 +95,7 @@ def generate_roles(cv_text):
     roles = [r.strip() for r in text.split("\n\n") if r.strip()]
     return roles[:4]
 
-def generate_one_pager(cv_path, coe_selected, tower_selected, save_debug=False):
+def generate_one_pager(cv_path, coe_selected, tower_selected, save_debug=True):
     """Generate all sections and return DataFrame."""
     try:
         cv_text = extract_text_from_pdf(cv_path)

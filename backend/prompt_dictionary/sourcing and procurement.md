@@ -5,18 +5,14 @@
     
     SECTIONS TO GENERATE: [
             "NAME",
-            "TOWER",
             "PROFILE OVERVIEW",
             "PROFESSIONAL EDUCATION",
             "INDUSTRY EXPERIENCE",
-            "FUNCTIONAL EXPERIENCE",
-            "CERTIFICATIONS/TRAINING",
-            "LANGUAGES"
+            "FUNCTIONAL EXPERIENCE"
         ]
         
     Section details:
     - NAME: Candidate’s name.
-    - TOWER: Use the tower selected by the user to complete this section. 
     - PROFILE OVERVIEW: One concise paragraph summarizing the candidate’s experience, skills, expertise, and key achievements. No names or languages. Bold **keywords**. Maximun 520 characters.
     - PROFESSIONAL EDUCATION: List university-level degrees (e.g., Bachelor’s or Master’s), separated by line breaks. Do NOT repeat information. Do NOT mention High School information. Do NOT mention Certifications.
         Examples: "Bachelor of Mathematics, Industrial Engineer, Bachelor of Economics"
@@ -36,6 +32,3 @@
         Do not include project descriptions, achievements, or soft skills.
         Examples of format and style (not a full list):
             “Data Analyst, Data Engineer, Logistics Coordinator, Inventory Analyst, Procurement Specialist, SAP Consultant MM”
-    - CERTIFICATIONS/TRAINING: Line-separated list of certification, training program names or skills. Each line must have 1–4 words only.
-        Examples of format and style (not a full list): "Python, Microsoft Power BI​, SAP S/4HANA MM"
-    - LANGUAGES: List only the languages and proficiency levels (e.g., English B2, Spanish Native). Each on a separate line. No bold or bullets. Use only the Common European Framework of Reference for Languages (A1, A2, B1, B2, C1, C2).

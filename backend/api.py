@@ -71,10 +71,10 @@ async def generate_onepager(req: GenerateRequest):
     print(f"✅ Received COE: {req.coe_selected}")
     print(f"✅ Received Tower: {req.tower_selected}")
 
-    if not req.coe_selected or not req.tower_selected:
+    if not req.coe_selected:
         raise HTTPException(
             status_code=400,
-            detail=f"Missing COE or Tower. Received: coe={req.coe_selected}, tower={req.tower_selected}"
+            detail=f"Missing COE or Tower. Received: coe={req.coe_selected}"
         )
 
     try:
@@ -97,13 +97,13 @@ async def generate_onepager(req: GenerateRequest):
 
     try:
         # Generate one-pager (creates an excel summary and returns a DataFrame)
-        df = gen.generate_one_pager(str(pdf_path), req.coe_selected, req.tower_selected, save_debug=False)
+        df = gen.generate_one_pager(str(pdf_path), req.coe_selected, req.tower_selected, save_debug=True)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating one-pager: {e}")
 
     try:
         # Populate PPTX using generated DataFrame
-        pptx_path = pptx.populate_pptx(df)
+        pptx_path = pptx.populate_pptx(df, req.coe_selected)
         full_pptx_path = BASE_DIR / pptx_path
         if not full_pptx_path.exists():
             raise FileNotFoundError(str(full_pptx_path))

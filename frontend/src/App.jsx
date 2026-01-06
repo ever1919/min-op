@@ -75,7 +75,6 @@ export default function CVOnePagerGenerator() {
   const handleGenerate = () => {
     setError('');
     if (!coeSelected) { setError('Please select a COE'); return; }
-    if (!towerSelected) { setError('Please select a Tower'); return; }
     if (!uploadedFile) { setError('Please upload a PDF file'); return; }
     processCV(uploadedFile);
   };
@@ -217,9 +216,7 @@ export default function CVOnePagerGenerator() {
             <select
               value={towerSelected}
               onChange={(e) => setTowerSelected(e.target.value)}
-              disabled={!coeSelected}
-              className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600 ${!coeSelected ? 'border-gray-200 bg-gray-100 cursor-not-allowed' : 'border-gray-300'
-                }`}
+              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600"
             >
               <option value="">Select Tower</option>
               {coeSelected && coeOptions[coeSelected] && coeOptions[coeSelected].map(t => <option key={t} value={t}>{t}</option>)}
@@ -251,7 +248,7 @@ export default function CVOnePagerGenerator() {
           <div className="flex gap-4 pt-4">
             <button
               onClick={handleGenerate}
-              disabled={isProcessing || !coeSelected || !towerSelected || !uploadedFile}
+              disabled={isProcessing || !coeSelected || !uploadedFile}
               className="flex-1 bg-purple-700 text-white py-3 rounded-lg font-semibold hover:bg-purple-800 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               {isProcessing ? 'Generating...' : 'Generate One-Pager'}

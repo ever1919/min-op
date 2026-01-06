@@ -30,12 +30,18 @@ def apply_bold_to_paragraph(paragraph):
         else:
             run.text = part
 
-def populate_pptx(df_text):
+def populate_pptx(df_text, coe_selected):
     """
     Populates a PowerPoint presentation with text from df_text.
     Each row of df_text should contain 'section_name' and 'output' columns.
+    Selects template based on COE.
     """
-    prs = Presentation('data/input/SC&O TEMPLATE DigiCore.pptx')
+    if coe_selected.lower() == "digi core":
+        template_path = 'data/input/SC&O TEMPLATE DigiCore.pptx'
+    else:
+        template_path = 'data/input/SC&O TEMPLATE.pptx'
+
+    prs = Presentation(template_path)
     slide = prs.slides[0]
 
     # Define sections where bullets should be applied
