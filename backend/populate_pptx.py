@@ -82,9 +82,9 @@ def populate_pptx(df_text, coe_selected):
                 # Handle NAME formatting
                 if shape.name.strip().lower() == 'name':
                     run = paragraph.runs[0]
-                    run.font.name = "Graphik Black"
-                    run.font.size = Pt(42)
-                    run.font.color.rgb = RGBColor(255, 255, 255)
+                    # run.font.name = "Graphik Black"
+                    # run.font.size = Pt(42)
+                    # run.font.color.rgb = RGBColor(255, 255, 255)
                     run.text = run.text.upper().strip()
 
                 # Handle TOWER formatting

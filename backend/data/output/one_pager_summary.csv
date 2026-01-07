@@ -1,31 +1,29 @@
 section_name,output
 NAME,Paula María Fernández
-PROFILE OVERVIEW,"Electronic engineer and project manager with experience leading MES implementations and industrial automation projects. Proficient in **Python**, **SQL**, **Power BI** and **PLC** programming; skilled in **Data Analytics**, **MES product ownership**, **project management**, QA and systems integration; proven ability to coordinate multidisciplinary teams and deliver IT-driven manufacturing improvements."
+PROFILE OVERVIEW,"Electronics engineer and project manager with experience leading IT and manufacturing implementations and serving as product owner for MES initiatives. Skilled in **Python**, **SQL**, **Power BI**, **ETL**, **analytics**, **automation**, **PLC programming**, and **ML**-oriented data tasks. Experienced in Agile QA, technical requirements definition, stakeholder coordination, and end-user training."
 PROFESSIONAL EDUCATION,"Bachelor of Electronic Engineering
-Postgraduate Diploma in Project Management"
+Postgraduate in Project Management (PMI course)
+Diploma in Data Analytics"
 INDUSTRY EXPERIENCE,"Automotive
 Industrial
 Software and Platforms
 High Tech"
-FUNCTIONAL EXPERIENCE,"Project Management Lead
+FUNCTIONAL EXPERIENCE,"Technical Project Manager
 MES Product Owner
-Data Analytics Engineer
-QA and Test Engineer
-PLC Control Programmer
-Systems Integration Engineer"
-Role_1,"Senior Project Engineering Analyst
-Owned business product requirements and led implementation of **MES** solutions, defining functional specifications and conducting **user training** for operators, analysts and leadership.
-Managed investment projects for production equipment including **project planning**, schedule control, resource allocation and **budget administration** using **MS Project**.
-Coordinated multidisciplinary teams and external suppliers, participating in global IT deployment teams and delivering data-driven monitoring and reporting with **Power BI**."
-Role_2,"QA Intern
-Supported the QA team within **Agile**/**Kanban** frameworks, using **Jira** to track tasks and defects and ensure timely resolution.
-Executed and documented **manual testing**, **descriptive** and **functional testing**, creating clear test cases and defect reports to improve product quality.
-Contributed to test process improvements, defect triage workflows and knowledge transfer to streamline QA operations and reporting."
-Role_3,"University Engineering Intern — AGV Projects
-Participated in design and implementation of **AGV** systems including electrical design, assembly and on-site **commissioning** to validate operational performance.
-Programmed and tested control logic using **PLC programming**, conducted troubleshooting and preventive **maintenance** to ensure system reliability.
-Collaborated on technical documentation and system diagrams using **AutoCAD**, supporting handover and operator training materials."
-Role_4,"Senior Programming & Robotics Instructor
-Designed and delivered STEAM curriculum for ages 4–15 focused on fundamentals of **electronics**, **programming** and **robotics** to build logical thinking and problem-solving.
-Developed hands-on projects, lesson plans and assessment materials to promote active, collaborative learning and sustained student engagement.
-Mentored students and supported classroom assistants, facilitating workshops that reinforced practical skills and curiosity in emerging technologies."
+Senior Data Analyst
+Senior Data Engineer
+QA Automation Engineer"
+Role_1,"Multinational manufacturing OEM – **MES Implementation & Investment Projects – Senior Project Engineering Analyst**
+Leads specification, planning and delivery of **MES** and capital machinery projects, coordinating multidisciplinary teams and external suppliers, managing schedules, budgets and functional requirements, and driving end-user **training** and global IT alignment to ensure effective project governance."
+Role_2,"STEAM education center – **STEAM Education Program – Senior Programming and Robotics Teacher**
+Designs and delivers hands-on curriculum in electronics, **programming** and robotics for ages 4–15, fostering logical thinking and collaborative STEAM skills while developing assessments and guiding practical learning activities."
+Role_3,"Software company – **Quality Assurance Program – QA Intern**
+Supported the QA team in an **Agile/Kanban** environment performing manual functional and descriptive testing, documenting defects in **Jira**, and assisting test coordination and tracking to improve product quality."
+Role_4,"Industrial automation projects – **AGV and Automation Projects – Engineering Intern**
+Contributed to design, **PLC programming**, construction, commissioning and maintenance of automated guided vehicles, performing system integration and on-site troubleshooting to support production automation deployments."
+Role_5,"Higher education department – **Undergraduate Electrical Course – Lecturer**
+Led laboratory sessions and **assessments** for introductory electrical circuits, provided student support, graded coursework and mentored new teaching assistants to maintain course quality and learning outcomes."
+Role_6,"Academic research project – **IoT Smart Sensors Research – Research Scholar**
+Conducted experimental research on smart sensor integration for **IoT** applications, contributing to data collection, analysis and collaborative scientific work within a funded research project."
+Role_7,"National tech training program – **Emerging Technologies Training – Participant**
+Completed training in emerging technologies including **5G**, **IoT** and **AI**, gaining applied knowledge of modern platforms and toolkits to inform technology-focused projects."

@@ -5,6 +5,7 @@ import json
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -55,30 +56,16 @@ def generate_sections(cv_text, coe_selected, tower_selected):
     )
     return response.choices[0].message.content.strip()
 
-def generate_roles(cv_text):
-    """Generate up to 4 roles, formatted with bold keywords and line breaks only."""
+def generate_roles(cv_text, coe_selected):
+    """Generate roles based on the COE, formatted with bold keywords and line breaks only."""
+    if coe_selected.lower() != "digi core":
+        coe_selected = "other"
+
+    with open(f"prompt_dictionary/{coe_selected.lower()}_roles.md", "r", encoding="utf-8") as f:
+        coe_roles_prompt = f.read()
     prompt = f"""
-    You are an AI assistant that extracts and rewrites a candidate’s RELEVANT EXPERIENCE into up to 4 roles.
-
-    Formatting and style:
-    - Each role must have this structure:
-        Role Title
-        Responsibility or achievement #1
-        Responsibility or achievement #2
-
-    - But look similar in structure but more detailed to this example. Never copy anything but the structure and always use at least 3 or more lines per role:
-        Data Analyst
-        Led the **development** of **data pipelines** using **Python** and **SQL** to streamline data processing.
-        Collaborated with **cross-functional teams** to implement **data visualization** solutions using **Power BI and Tableau**, enhancing decision-making capabilities.
-        Implemented **statistical analysis** and **machine learning** models using **R** and Python to derive actionable insights from large datasets, improving business strategies.
-
-    - Each role must have 3-4 lines, maximum 400 characters per line.
-    - Focus on responsibilities and achievements that highlight skills, tools, or technologies.
-    - Bold **keywords**, **skills**, or **technologies** only.
-    - Keep output concise and professional English tone.
-    - Do NOT use bullets or dashes — only separate lines with line breaks.
-    - Exclude company names, institutions, and dates.
-    - Maximum of 4 roles. If fewer exist, only return those. Do NOT create new roles.
+    You are an AI assistant that extracts and summarizes relevant professional experience from a candidate CV into distinct role blocks.
+    {coe_roles_prompt}
 
     Candidate CV:
     {cv_text}
@@ -92,8 +79,12 @@ def generate_roles(cv_text):
     text = response.choices[0].message.content.strip()
 
     # Split each role block by double line breaks
-    roles = [r.strip() for r in text.split("\n\n") if r.strip()]
-    return roles[:4]
+    roles = [r.strip() for r in re.split(r"\n\s*\n", text) if r.strip()]
+    if coe_selected.lower() == "digi core":
+        roles = roles[:4]
+    else:
+        roles = roles[:9]
+    return roles
 
 def generate_one_pager(cv_path, coe_selected, tower_selected, save_debug=True):
     """Generate all sections and return DataFrame."""
@@ -107,7 +98,7 @@ def generate_one_pager(cv_path, coe_selected, tower_selected, save_debug=True):
 
         # Generate dynamic roles
         print("🔹 Generating: RELEVANT EXPERIENCE (Roles)...")
-        roles = generate_roles(cv_text)
+        roles = generate_roles(cv_text, coe_selected)
         for i, element in enumerate(roles):
             response_dic[f"Role_{i+1}"] = element
 
