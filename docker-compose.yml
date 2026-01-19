@@ -1,17 +1,23 @@
 services:
   backend:
-    build: ./backend
-    env_file: ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
-      - ./backend/data:/app/data
-    restart: unless-stopped
+      - backend_data:/app/data
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - backend
-    restart: unless-stopped
+
+volumes:
+  backend_data:
