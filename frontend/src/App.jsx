@@ -64,8 +64,8 @@ export default function CVOnePagerGenerator() {
       return;
     }
 
-    if (file.size > 200 * 1024 * 1024) {
-      setError('File size must be less than 200MB');
+    if (file.size > 10 * 1024 * 1024) {
+      setError('File size must be less than 10MB');
       return;
     }
 
@@ -280,7 +280,7 @@ export default function CVOnePagerGenerator() {
               <div className="text-center">
                 <h3 className="text-3xl font-semibold text-gray-900 mb-3">One-Pager Generated Successfully!</h3>
                 <p className="text-gray-600 text-lg mb-2">File: <span className="font-medium">{uploadedFile.name}</span></p>
-                <p className="text-gray-500">Size: {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                <p className="text-gray-500">Generated file size: {(generatedPager.blob.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
 
               <div className="flex space-x-4">
