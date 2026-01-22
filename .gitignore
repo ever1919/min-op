@@ -64,6 +64,10 @@ yarn.lock
 pnpm-lock.yaml
 package-lock.json
 
+# Docker cheat sheet 
+
+docker_cheat_sheet.md
+
 # Dot files
 # Ignore all dotfiles except .gitignore itself (which is a dotfile)
 # and potentially other important top-level dotfiles like .editorconfig or .travis.yml
