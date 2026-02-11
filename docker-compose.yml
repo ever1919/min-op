@@ -1,4 +1,12 @@
 services:
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: test
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
   backend:
     build:
       context: ./backend
@@ -9,6 +17,9 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
       - backend_data:/app/data
+    depends_on:
+      backend-test:
+        condition: service_completed_successfully
 
   frontend:
     build:
